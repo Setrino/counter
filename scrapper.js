@@ -140,7 +140,7 @@ setInterval(function(){
             sendMail(prices);
         }
     });
-}, 60000);
+}, 300000);
 
 function perPage(pageID, callback) {
 
