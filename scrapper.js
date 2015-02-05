@@ -9,7 +9,6 @@ var increment = 1;
 var iCalEvent = require('icalevent');
 var fs = require('fs');
 var nodemailer = require('nodemailer');
-var fx = require('money');
 
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -204,7 +203,8 @@ function makeExchange(price){
     if(!price.match(/([0-9])/)){
         return price;
     }
-    var clearPrice = (price.match(/(?!..;)[0-9]+\.?\,?[0-9]+/)).toString().replace(',', '.');
+    var temp = price.replace(/(&#.+;)/, '').replace(/(,--)/, '.0');
+    var clearPrice = (temp.match(/(?!..;)[0-9]+\.?\,?[0-9]+/)).toString().replace(',', '.');
     Object.keys(currencies).forEach(function(key) {
         if(price.match(key)){
             currency = currencies[key];
@@ -214,20 +214,22 @@ function makeExchange(price){
 
     //console.log(currency + ' ' + clearPrice);
 
-    fx.base = "USD";
-    fx.rates = {
-        "EUR" : 0.88,
+    var rates = {
+        "EUR" : 1.15,
         "GBP" : 1.53,
-        "USD" : 2,
-        "RUB" : 65.23,
-        "MYR" : 3.57,
-        "CAD" : 1.24,
-        "BRL" : 2.69,
-        "TRY" : 2.40,
-        "CHF" : 0.92
+        "USD" : 1,
+        "RUB" : 0.015,
+        "MYR" : 0.28,
+        "CAD" : 0.80,
+        "BRL" : 0.36,
+        "TRY" : 0.41,
+        "CHF" : 1.09
     };
+
+    //console.log(clearPrice);
+
     // money.js is ready to use:
-    return fx.convert(clearPrice, {from: currency, to: "USD"}).toFixed(2);
+    return (clearPrice * rates[currency]).toFixed(2);
 }
 
 function substring(string, from, to){
