@@ -217,7 +217,7 @@ function makeExchange(price){
     fx.base = "USD";
     fx.rates = {
         "EUR" : 0.88,
-        "GBP" : 0.66,
+        "GBP" : 1.53,
         "USD" : 2,
         "RUB" : 65.23,
         "MYR" : 3.57,
