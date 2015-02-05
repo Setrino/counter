@@ -138,6 +138,8 @@ setInterval(function(){
     async.each(pagesIds, perPage, function (err) {
         if(buyBoolean){
             sendMail(prices);
+        }else{
+            prices = '';
         }
     });
 }, 300000);
